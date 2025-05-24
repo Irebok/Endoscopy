@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="A:\Universidad\TFM\IMU\librerias\Fusion-main\Examples\Advanced\main.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="A:\Universidad\TFM\IMU\librerias\Fusion-main\Examples\Advanced\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{0A2D695F-C1D2-34F5-B32F-B7581B25993F}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
