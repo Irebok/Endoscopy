@@ -79,16 +79,16 @@ void enviar_sensor_interno(auto *kb)
             data_enable1 |= (1 << 2);
         }
       // }
-      Serial.print("[INTERNO ] Acc: ");
-      Serial.print(ax); Serial.print(", ");
-      Serial.print(ay); Serial.print(", ");
-      Serial.print(az); Serial.print(" | Gyro: ");
-      Serial.print(gx); Serial.print(", ");
-      Serial.print(gy); Serial.print(", ");
-      Serial.print(gz); Serial.print(" | Mag: ");
-      Serial.print(mx); Serial.print(", ");
-      Serial.print(my); Serial.print(", ");
-      Serial.println(mz);
+      // Serial.print("[INTERNO ] Acc: ");
+      // Serial.print(ax); Serial.print(", ");
+      // Serial.print(ay); Serial.print(", ");
+      // Serial.print(az); Serial.print(" | Gyro: ");
+      // Serial.print(gx); Serial.print(", ");
+      // Serial.print(gy); Serial.print(", ");
+      // Serial.print(gz); Serial.print(" | Mag: ");
+      // Serial.print(mx); Serial.print(", ");
+      // Serial.print(my); Serial.print(", ");
+      // Serial.println(mz);
       kb->motion(ax, ay, az, gx, gy, gz, mx, my, mz, 1, data_enable1);
         kb->SendReport();
 }
@@ -112,16 +112,16 @@ void enviar_sensor_tubo(auto *kb)
             data_enable2 |= (1 << 2);
         }
       // }
-      Serial.print("[TUBO ] Acc: ");
-      Serial.print(ax); Serial.print(", ");
-      Serial.print(ay); Serial.print(", ");
-      Serial.print(az); Serial.print(" | Gyro: ");
-      Serial.print(gx); Serial.print(", ");
-      Serial.print(gy); Serial.print(", ");
-      Serial.print(gz); Serial.print(" | Mag: ");
-      Serial.print(mx); Serial.print(", ");
-      Serial.print(my); Serial.print(", ");
-      Serial.println(mz);
+      // Serial.print("[TUBO ] Acc: ");
+      // Serial.print(ax); Serial.print(", ");
+      // Serial.print(ay); Serial.print(", ");
+      // Serial.print(az); Serial.print(" | Gyro: ");
+      // Serial.print(gx); Serial.print(", ");
+      // Serial.print(gy); Serial.print(", ");
+      // Serial.print(gz); Serial.print(" | Mag: ");
+      // Serial.print(mx); Serial.print(", ");
+      // Serial.print(my); Serial.print(", ");
+      // Serial.println(mz);
       kb->motion(ax, ay, az, gx, gy, gz, mx, my, mz, 2, data_enable2);
         kb->SendReport();
 }
@@ -144,16 +144,16 @@ void enviar_sensor_punta(auto *kb)
             data_enable3 |= (1 << 2);
         }
       // }
-      Serial.print("[PUNTA ] Acc: ");
-      Serial.print(ax); Serial.print(", ");
-      Serial.print(ay); Serial.print(", ");
-      Serial.print(az); Serial.print(" | Gyro: ");
-      Serial.print(gx); Serial.print(", ");
-      Serial.print(gy); Serial.print(", ");
-      Serial.print(gz); Serial.print(" | Mag: ");
-      Serial.print(mx); Serial.print(", ");
-      Serial.print(my); Serial.print(", ");
-      Serial.println(mz);
+      // Serial.print("[PUNTA ] Acc: ");
+      // Serial.print(ax); Serial.print(", ");
+      // Serial.print(ay); Serial.print(", ");
+      // Serial.print(az); Serial.print(" | Gyro: ");
+      // Serial.print(gx); Serial.print(", ");
+      // Serial.print(gy); Serial.print(", ");
+      // Serial.print(gz); Serial.print(" | Mag: ");
+      // Serial.print(mx); Serial.print(", ");
+      // Serial.print(my); Serial.print(", ");
+      // Serial.println(mz);
       kb->motion(ax, ay, az, gx, gy, gz, mx, my, mz, 3, data_enable3);
         kb->SendReport();
 }
@@ -193,8 +193,8 @@ void enviar_buttons(auto *kb)
   }
   kb->motion(0, 0, 0, 0, 0, 0, 0, 0, 0, 5, button_enable);
     kb->SendReport();
-  Serial.print("Button: ");
-    Serial.println(button_enable);
+  // Serial.print("Button: ");
+  //   Serial.println(button_enable);
 }
 
 void setup()
@@ -243,9 +243,6 @@ void loop()
         analogWrite(LED_BUILTIN, 0);
         return;
       }
-      // if (avoid_mag > 2) {
-        // avoid_mag = 0;
-      // }
       
       auto *kb = bleEndoscopy.hid();
       avoid_mag++;

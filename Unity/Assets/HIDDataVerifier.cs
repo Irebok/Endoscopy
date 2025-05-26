@@ -244,10 +244,10 @@ public class Verifier : MonoBehaviour
             // magneticRejection = 70f,
             // recoveryTriggerPeriod = SAMPLE_RATE*1;
             convention = 0, // NWU
-            gain = 0.15f,
+            gain = 0.2f,
             gyroscopeRange = 2000.0f,
-            accelerationRejection = 15f,
-            magneticRejection = 15f,
+            accelerationRejection = 10f,
+            magneticRejection = 10f,
             recoveryTriggerPeriod = SAMPLE_RATE * 5
         };
 
@@ -341,20 +341,24 @@ public class Verifier : MonoBehaviour
             currentSensorData.lastTimestamp = now;
 
 
-            currentSensorData.accelerometer = new Vector3(-ay, -ax, az);
+            currentSensorData.accelerometer = new Vector3(-ax, ay, az);
             currentSensorData.accelReceived = true;
             currentSensorData.accelEnabled = enable_data;
 
-            currentSensorData.gyroscope = new Vector3(-gy, -gx, gz);
+            currentSensorData.gyroscope = new Vector3(-gx, gy, gz);
             currentSensorData.gyroReceived = true;
             currentSensorData.gyroEnabled = enable_data;
 
-            if ((enable_data & 0b100) != 0) currentSensorData.kalmanIMU.Step(currentSensorData.deltaTime, new Vector3(-mx, -my, mz));
-            else currentSensorData.kalmanIMU.Step(currentSensorData.deltaTime);
-
-            currentSensorData.magnetometer = currentSensorData.kalmanIMU.GetEstimate();
+            currentSensorData.magnetometer = new Vector3(mx, my, mz);
             currentSensorData.magReceived = true;
             currentSensorData.magEnabled = enable_data;
+
+            // if ((enable_data & 0b100) != 0) currentSensorData.kalmanIMU.Step(currentSensorData.deltaTime, new Vector3(mx, my, mz));
+            // else currentSensorData.kalmanIMU.Step(currentSensorData.deltaTime);
+
+            // currentSensorData.magnetometer = currentSensorData.kalmanIMU.GetEstimate();
+            // currentSensorData.magReceived = true;
+            // currentSensorData.magEnabled = enable_data;
 
             if (enable_data >= 3) ProcessSensorData(ref currentSensorData);
 
@@ -395,8 +399,8 @@ public class Verifier : MonoBehaviour
         var mag_cal = FusionCalibrationMagnetic(mag, new FusionMatrix(data.softIronMatrix), new FusionVector(data.magBias));
 
         var gyro_cal_offset = FusionOffsetUpdate(ref data.offset, gyro_cal);
-        // if(data.id == (int)SensorType.EndTube)
-        //     Debug.Log($"Mag: {mag.x} {mag.y} {mag.z}  Mag_cal: {mag_cal.x} {mag_cal.y} {mag_cal.z}  Gyro_cal_offset: {gyro_cal_offset.x} {gyro_cal_offset.y} {gyro_cal_offset.z}  Delta: {data.deltaTime}");
+        // if(data.id == (int)SensorType.Internal)
+        //     Debug.Log($"Mag: {mag.x} {mag.y} {mag.z}  Mag_cal: {mag_cal.x} {mag_cal.y} {mag_cal.z} Delta: {data.deltaTime}");
 
 
 
@@ -512,7 +516,7 @@ public class Verifier : MonoBehaviour
             currentSensorData.inverseSoftIronMatrix = currentSensorData.softIronMatrix.inverse;
 
             currentSensorData.isCalibratingMag = false;
-            Debug.Log($"Magnetometer calibration completed.\nBias: {currentSensorData.magBias}\nSoft iron matrix:\n{currentSensorData.softIronMatrix}");
+            Debug.Log($"Magnetometer {currentSensorData.id} calibration completed.\nBias: {currentSensorData.magBias}\nSoft iron matrix:\n{currentSensorData.softIronMatrix}");
         }
     }
 
@@ -532,7 +536,7 @@ public class Verifier : MonoBehaviour
             currentSensorData.offset.timeout = sampleRate * 5;
             currentSensorData.isCalibratingDeltaTime = false;
 
-            Debug.Log($"[✅] Calibración de deltaTime completada. Periodo promedio: {currentSensorData.id} {sampleRate:F6}s");
+            Debug.Log($"[✅] Calibración de deltaTime completada. Sample rate promedio: {currentSensorData.id} {sampleRate:F6}s");
         }
     }
 

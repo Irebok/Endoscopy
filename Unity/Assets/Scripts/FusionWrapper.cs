@@ -8,6 +8,7 @@ using MathNet.Numerics.LinearAlgebra.Double;
 public static class FusionWrapper
 {
     public const int SAMPLE_RATE = 40;
+    // public const int SAMPLE_RATE = 97;
 
     [StructLayout(LayoutKind.Sequential)]
     public struct FusionVector {
