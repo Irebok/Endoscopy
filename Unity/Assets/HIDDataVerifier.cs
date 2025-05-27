@@ -412,7 +412,8 @@ public class Verifier : MonoBehaviour
         var quatPtr = FusionAhrsGetQuaternion(ref data.ahrs);
         // Quaternion rotation = ToUnityQuaternion(quatPtr);
         var euler = FusionQuaternionToEuler(quatPtr);
-        Quaternion rotation = Quaternion.Euler(data.pitch, data.yaw, data.roll);
+        Quaternion rotation = Quaternion.Euler(-data.pitch, -data.yaw, data.roll);
+        // Quaternion rotation = Quaternion.Euler(data.roll, -data.yaw, data.pitch);
         data.roll = euler.roll;
         data.pitch = euler.pitch;
         data.yaw = euler.yaw;
@@ -432,7 +433,8 @@ public class Verifier : MonoBehaviour
         }
 
         // Debug: Mostrar resultados AHRS
-        // Debug.Log($"[n] Roll: {euler.roll:F1}°, Pitch: {euler.pitch:F1}°, Yaw: {euler.yaw:F1}°");
+        if(data.id == 3)
+        Debug.Log($"[n] Roll: {euler.roll:F1}°, Pitch: {euler.pitch:F1}°, Yaw: {euler.yaw:F1}°");
         // Debug.Log($"[Earth AcFusiocel] X: {earthAccel.x:F2}, Y: {earthAccel.y:F2}, Z: {earthAccel.z:F2}");
         // if(data.id == 3)
         //     Debug.Log($"Data received: Δt={data.deltaTime:F8}, " +

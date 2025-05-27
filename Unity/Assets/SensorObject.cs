@@ -33,15 +33,18 @@ public class OrientationUpdater : MonoBehaviour
                 // provider.startCalibrationMag(Verifier.SensorType.MidTube, 2000);
 
 
-                provider.setAcelBias(Verifier.SensorType.MidTube, new Vector3((float)0.05044835, (float)-0.0003466018, (float)-0.001710713));  // 0,05044835 -0,0003466018 -0,001710713
-                provider.setGyroBias(Verifier.SensorType.MidTube, new Vector3((float)-3.165749, (float)-5.542736, (float)2.636271));  // -3,165749 -5,542736 2,636271
+                provider.setAcelBias(Verifier.SensorType.MidTube, new Vector3((float)0.05044835, (float)-0.0003466018, (float)-0.001710713));  // 
+                provider.setGyroBias(Verifier.SensorType.MidTube, new Vector3((float)-3.165749, (float)-5.542736, (float)2.636271));  // 
                 Matrix4x4 m4x4End = Matrix4x4.identity; // m4x4.m00 = (float)1.354;  m4x4.m11 = (float)0.851; m4x4.m22 = (float)0.921; 
-                provider.setMagBias(Verifier.SensorType.MidTube, new Vector3((float)62.96, (float)311.49, (float)37.38), m4x4End);  // (62.96, 311.49, 37.38)
+                // provider.setMagBias(Verifier.SensorType.MidTube, new Vector3((float)62.96, (float)311.49, (float)37.38), m4x4End);  // 
+                provider.setMagBias(Verifier.SensorType.MidTube, new Vector3((float)19.01, (float)12.45, (float)2.22), m4x4End);  // (19.01, 12.45, 2.22)      IMU sin endoscopio
 
-                provider.setAcelBias(Verifier.SensorType.EndTube, new Vector3((float)0.01189658, (float)-0.01439686, (float)0.01217377));  //  0,01189658 -0,01439686 0,01217377
-                provider.setGyroBias(Verifier.SensorType.EndTube, new Vector3((float)0.4471607, (float)2.758421, (float)-0.5646203));  //  0,4471607 2,758421 -0,5646203
+
+                provider.setAcelBias(Verifier.SensorType.EndTube, new Vector3((float)0.01189658, (float)-0.01439686, (float)0.01217377));  //  
+                provider.setGyroBias(Verifier.SensorType.EndTube, new Vector3((float)0.4471607, (float)2.758421, (float)-0.5646203));  //  
                 Matrix4x4 m4x4Mid = Matrix4x4.identity; // m4x4.m00 = (float)1.354;  m4x4.m11 = (float)0.851; m4x4.m22 = (float)0.921; 
-                provider.setMagBias(Verifier.SensorType.EndTube, new Vector3((float)12.87, (float)15.92, (float)-0.39), m4x4Mid);  // (12.87, 15.92, -0.39)
+                // provider.setMagBias(Verifier.SensorType.EndTube, new Vector3((float)12.87, (float)15.92, (float)-0.39), m4x4Mid);  // 
+                provider.setMagBias(Verifier.SensorType.EndTube, new Vector3((float)17.40, (float)10.51, (float)-11.43), m4x4Mid);  // (17.40, 10.51, -11.43)    IMU sin endoscopio
 
 
                 provider.setAcelBias(Verifier.SensorType.Internal, new Vector3((float)0.0, (float)-0.02, (float)-0.01)); // x e y cambiados
