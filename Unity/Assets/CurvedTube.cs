@@ -17,6 +17,9 @@ public class HalfCurvedTubeSimulator : MonoBehaviour
     private float timer = 0f;
     private const float calibrationDelay = 10f;
 
+    private long lastOffset = 0;
+
+
     void Update()
     {
         if (!offsetCalibrated)
@@ -31,6 +34,15 @@ public class HalfCurvedTubeSimulator : MonoBehaviour
             return;
         }
 
+        // 0. Actualizar simMid solo si cambia el offset
+        long offset = verifier.GetPosition();
+        if (offset != lastOffset)
+        {
+            float delta = (float)(offset - lastOffset)/50f; // ajustar escala si necesario
+            simBase.position += new Vector3(0f, 0f, delta);
+            lastOffset = offset;
+        }
+        
         // 1. Obtener rotaciones
         Quaternion qBase = imuBase.rotation;
         Quaternion qTip = imuTip.rotation;
@@ -51,7 +63,7 @@ public class HalfCurvedTubeSimulator : MonoBehaviour
 
         // 4. Posicionar y rotar la punta
         simTip.position = tipPoint;
-        simTip.rotation = qBase * qRelative;
+        simTip.rotation = qRelative;
         // Debug.Log($" Euler XYZ: [Base] {eulerBase.x:F1}°, {eulerBase.y:F1}°, {eulerBase.z:F1}° [Tip ] {eulerTip.x:F1}°, {eulerTip.y:F1}°, {eulerTip.z:F1}° [Relative] {curvedDirection.x:F1}°, {curvedDirection.y:F1}°, {curvedDirection.z:F1}°");
 
 
