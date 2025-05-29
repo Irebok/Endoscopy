@@ -233,7 +233,6 @@ public class Verifier : MonoBehaviour
     {
         InputSystem.onEvent += OnInputEvent;
 
-        // Inicializar la fusión
         // FusionWrapper.FusionOffsetInitialise(ref offset, FusionWrapper.SAMPLE_RATE);
         settings = new FusionAhrsSettings
         {
@@ -269,17 +268,15 @@ public class Verifier : MonoBehaviour
     
     private void OnInputEvent(InputEventPtr eventPtr, InputDevice inputDevice)
     {
-        // Check if the event is a valid StateEvent
         if (!(eventPtr.IsA<StateEvent>()))
             return;
 
-        // Ensure inputDevice is the correct type
         if (!(inputDevice is ENDOSCOPY_CONTROLLER_Device ctrl))
         {
             return;
         }
 
-        device = ctrl;  // Initialize the device
+        device = ctrl;
 
         if (device == null)
         {
@@ -408,7 +405,6 @@ public class Verifier : MonoBehaviour
         FusionAhrsUpdate(ref data.ahrs, gyro_cal_offset, acel_cal, mag_cal, data.deltaTime);
 
 
-        // Obtenemos resultados
         var quatPtr = FusionAhrsGetQuaternion(ref data.ahrs);
         // Quaternion rotation = ToUnityQuaternion(quatPtr);
         var euler = FusionQuaternionToEuler(quatPtr);
@@ -538,7 +534,7 @@ public class Verifier : MonoBehaviour
             currentSensorData.offset.timeout = sampleRate * 5;
             currentSensorData.isCalibratingDeltaTime = false;
 
-            Debug.Log($"[✅] Calibración de deltaTime completada. Sample rate promedio: {currentSensorData.id} {sampleRate:F6}s");
+            Debug.Log($"Calibración de deltaTime completada. Sample rate promedio: {currentSensorData.id} {sampleRate:F6}s");
         }
     }
 
@@ -726,7 +722,6 @@ public class Verifier : MonoBehaviour
 
         Debug.Log($"Bias (Hard Iron Offset):\n{sensor.magBias}");
 
-        // Imprimimos la matriz de corrección Soft Iron
         Debug.Log("Soft Iron Correction Matrix:");
         Debug.Log(MatrixToString(sensor.softIronMatrix));
         
