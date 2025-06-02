@@ -130,7 +130,6 @@ public class Verifier : MonoBehaviour
 
     private string logFilePath;
     private StreamWriter logWriter;
-
     readonly FusionMatrix gyroscopeMisalignment = new FusionMatrix(
     1.0f, 0.0f, 0.0f,
     0.0f, 1.0f, 0.0f,
@@ -143,19 +142,11 @@ public class Verifier : MonoBehaviour
         0.0f, 1.0f, 0.0f,
         0.0f, 0.0f, 1.0f
     );
-
     readonly FusionVector accelerometerSensitivity = new FusionVector(1.0f, 1.0f, 1.0f);
-
-    // private FusionAhrs ahrs;
-    // private float lastTimestamp;
-    // private float lastTimestampMag;
     private int incompleteFrames = 0;
     private bool trackingTime = false;
     private float startTime = 0f;
     private byte lastTrackedTimestamp = 0;
-
-
-    // Calibración (se puede actualizar con tus datos reales luego)
     private readonly FusionMatrix identityMatrix = new FusionMatrix {
         m00 = 1, m11 = 1, m22 = 1
     };
@@ -236,12 +227,6 @@ public class Verifier : MonoBehaviour
         // FusionWrapper.FusionOffsetInitialise(ref offset, FusionWrapper.SAMPLE_RATE);
         settings = new FusionAhrsSettings
         {
-            // convention = 0, // NWU
-            // gain = 0.2f,
-            // gyroscopeRange = 2000.0f,
-            // accelerationRejection = 70f,
-            // magneticRejection = 70f,
-            // recoveryTriggerPeriod = SAMPLE_RATE*1;
             convention = 0, // NWU
             gain = 0.2f,
             gyroscopeRange = 2000.0f,
@@ -399,9 +384,6 @@ public class Verifier : MonoBehaviour
         // if(data.id == (int)SensorType.Internal)
         //     Debug.Log($"Mag: {mag.x} {mag.y} {mag.z}  Mag_cal: {mag_cal.x} {mag_cal.y} {mag_cal.z} Delta: {data.deltaTime}");
 
-
-
-        // Ejecutamos AHRS
         FusionAhrsUpdate(ref data.ahrs, gyro_cal_offset, acel_cal, mag_cal, data.deltaTime);
 
 

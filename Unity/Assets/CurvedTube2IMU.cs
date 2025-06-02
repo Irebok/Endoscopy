@@ -34,46 +34,50 @@ public class HalfCurvedTubeSimulator : MonoBehaviour
             return;
         }
 
-        // 0. Actualizar simMid solo si cambia el offset
         long offset = verifier.GetPosition();
         if (offset != lastOffset)
         {
-            float delta = (float)(offset - lastOffset)/50f; // ajustar escala si necesario
+            float delta = (float)(offset - lastOffset)/50f; 
             simBase.position += new Vector3(0f, 0f, delta);
             lastOffset = offset;
         }
         
-        // 1. Obtener rotaciones
         Quaternion qBase = imuBase.rotation;
         Quaternion qTip = imuTip.rotation;
-
-        Vector3 eulerBase = qBase.eulerAngles;
-        Vector3 eulerTip = qTip.eulerAngles;
-
-
-        // 2. Calcular rotación relativa compensada
         Quaternion qMeasuredRelative = Quaternion.Inverse(qBase) * qTip;
         Quaternion qRelative = Quaternion.Inverse(verifier.referenceRelativeRotation) * qMeasuredRelative;
 
-        // 3. Calcular dirección y puntos clave
+        // Eliminar el componente de roll (Z) de qRelative
+        Vector3 relativeEuler = qRelative.eulerAngles;
+        if (relativeEuler.x > 180f) relativeEuler.x -= 360f;
+        if (relativeEuler.y > 180f) relativeEuler.y -= 360f;
+        Quaternion qRelativeNoRoll = Quaternion.Euler(relativeEuler.x, relativeEuler.y, 0f);
+
+        // Calcular dirección y puntos clave
         Vector3 baseForward = simBase.forward;
         Vector3 midPoint = simBase.position + baseForward * (tubeLength / 2f);
-        Vector3 curvedDirection = qRelative * baseForward;
-        Vector3 tipPoint = midPoint + curvedDirection.normalized * (tubeLength / 2f);
+        Vector3 curvedDirection = qRelativeNoRoll * baseForward;
 
-        // 4. Posicionar y rotar la punta
+        // Aplicar roll de la base como rotación del plano de curvatura
+        float roll = imuBase.rotation.eulerAngles.z;
+        if (roll > 180f) roll -= 360f;
+        Quaternion rollRotation = Quaternion.AngleAxis(roll, simBase.forward);
+        Vector3 finalDirection = rollRotation * curvedDirection;
+
+        // Obtencion de la posicion de la punta
+        Vector3 tipPoint = midPoint + finalDirection.normalized * (tubeLength / 2f);
+
+        // Debug.Log($"Direction {curvedDirection}\t Base roll {roll}\t Final direction {finalDirection}");
+
         simTip.position = tipPoint;
-        simTip.rotation = qRelative;
-        // Debug.Log($" Euler XYZ: [Base] {eulerBase.x:F1}°, {eulerBase.y:F1}°, {eulerBase.z:F1}° [Tip ] {eulerTip.x:F1}°, {eulerTip.y:F1}°, {eulerTip.z:F1}° [Relative] {curvedDirection.x:F1}°, {curvedDirection.y:F1}°, {curvedDirection.z:F1}°");
+        simTip.rotation = Quaternion.LookRotation(finalDirection.normalized, simBase.up);
 
 
-        // 5. Dibujar arco (línea compuesta)
         arcRenderer.positionCount = 3;
         arcRenderer.SetPosition(0, simBase.position);
         arcRenderer.SetPosition(1, midPoint);
         arcRenderer.SetPosition(2, tipPoint);
 
-        // 6. Debug visual
         Debug.DrawRay(simBase.position, baseForward * 0.2f, Color.green);
         Debug.DrawRay(simTip.position, simTip.forward * 0.2f, Color.red);
     }

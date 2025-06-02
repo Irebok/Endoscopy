@@ -3,7 +3,6 @@
 #include <Arduino_LSM9DS1.h>
 #include <Arduino_LSM9DS1Extern.h>
 #include <Wire.h>
-// #include <SparkFunLSM9DS1.h>
 #include <Encoder.h>
 
 
