@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class HalfCurvedTubeSimulator : MonoBehaviour
+public class IMU2CurvedTubeSimulator : MonoBehaviour
 {
     public Verifier verifier;
 
@@ -42,9 +42,9 @@ public class HalfCurvedTubeSimulator : MonoBehaviour
             lastOffset = offset;
         }
         
-        Quaternion qBase = imuBase.rotation;
-        Quaternion qTip = imuTip.rotation;
-        Quaternion qMeasuredRelative = Quaternion.Inverse(qBase) * qTip;
+        Quaternion qMid = imuBase.rotation;
+        Quaternion qEnd = imuTip.rotation;
+        Quaternion qMeasuredRelative = Quaternion.Inverse(qMid) * qEnd;
         Quaternion qRelative = Quaternion.Inverse(verifier.referenceRelativeRotation) * qMeasuredRelative;
 
         // Eliminar el componente de roll (Z) de qRelative
@@ -58,19 +58,19 @@ public class HalfCurvedTubeSimulator : MonoBehaviour
         Vector3 midPoint = simBase.position + baseForward * (tubeLength / 2f);
         Vector3 curvedDirection = qRelativeNoRoll * baseForward;
 
-        // Aplicar roll de la base como rotación del plano de curvatura
-        float roll = imuBase.rotation.eulerAngles.z;
-        if (roll > 180f) roll -= 360f;
-        Quaternion rollRotation = Quaternion.AngleAxis(roll, simBase.forward);
-        Vector3 finalDirection = rollRotation * curvedDirection;
+        // // Aplicar roll de la base como rotación del plano de curvatura
+        // float roll = imuBase.rotation.eulerAngles.z;
+        // if (roll > 180f) roll -= 360f;
+        // Quaternion rollRotation = Quaternion.AngleAxis(roll, simBase.forward);
+        // Vector3 finalDirection = rollRotation * curvedDirection;
 
         // Obtencion de la posicion de la punta
-        Vector3 tipPoint = midPoint + finalDirection.normalized * (tubeLength / 2f);
+        Vector3 tipPoint = midPoint + curvedDirection.normalized * (tubeLength / 2f);
 
-        // Debug.Log($"Direction {curvedDirection}\t Base roll {roll}\t Final direction {finalDirection}");
+        // Debug.Log($"\t\tqMeasuredRelative {qMeasuredRelative.eulerAngles}\t\trelativeEuler {relativeEuler}\t\tqRelativeNoRoll {qRelativeNoRoll.eulerAngles}\t\tqRelative {curvedDirection}");
 
         simTip.position = tipPoint;
-        simTip.rotation = Quaternion.LookRotation(finalDirection.normalized, simBase.up);
+        simTip.rotation = Quaternion.LookRotation(curvedDirection.normalized, simBase.up);
 
 
         arcRenderer.positionCount = 3;

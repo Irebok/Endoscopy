@@ -3,14 +3,13 @@
 #include <Arduino_LSM9DS1.h>
 #include <Arduino_LSM9DS1Extern.h>
 #include <Wire.h>
+// #include <SparkFunLSM9DS1.h>
 #include <Encoder.h>
 
 
 /* -------------------------------------------------------------------------- */
 
 Nano33BleEndoscopy bleEndoscopy("Endoscopy device");
-// LSM9DS1 imuEndoscopyPunta;
-// LSM9DS1 imuEndoscopyTubo;
 LSM9DS1ExternClass imuEndoscopyPunta(Wire, 0x6B, 0x1E);
 LSM9DS1ExternClass imuEndoscopyTubo(Wire, 0x6A, 0x1C);
 
@@ -193,7 +192,7 @@ void enviar_buttons(auto *kb)
   kb->motion(0, 0, 0, 0, 0, 0, 0, 0, 0, 5, button_enable);
     kb->SendReport();
   // Serial.print("Button: ");
-  //   Serial.println(button_enable);
+  //   Serial.println(sensorValue);
 }
 
 void setup()
